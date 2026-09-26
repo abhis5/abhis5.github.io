@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhishek Shukla | Data &amp; AI Engineer</title>
+<meta name="description" content="Abhishek Shukla, Senior Data Engineer & Associate Tech Architect. Years of AWS data platforms and the production LLM & agent systems running on them. Query my career like a database.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abhishek Shukla | Data & AI Engineer">
+<meta property="og:description" content="Don't read my résumé. Query it. A live RAG + eval console over my own career, built on the same data platforms I ship at 1 TB/day.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Abhishek Shukla | Data & AI Engineer">
+<meta name="twitter:description" content="Don't read my résumé. Query it. A live RAG + eval console over my own career as a database.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080C15; --panel:#0D1420; --panel-2:#111B2A; --panel-3:#162335;
+    --edge:rgba(180,205,230,.09); --edge-2:rgba(180,205,230,.17);
+    --text:#E4ECF5; --muted:#7E90A8; --faint:#556982;
+    --cyan:#57C6E6; --cyan-soft:rgba(87,198,230,.12); --cyan-line:rgba(87,198,230,.38);
+    --gold:#F0B84B; --gold-soft:rgba(240,184,75,.12); --gold-line:rgba(240,184,75,.42);
+    --green:#5FD3A0;
+    --disp:"Space Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",monospace;
+    --body:"IBM Plex Sans",system-ui,sans-serif;
+    --wrap:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6;
+    background-image:linear-gradient(var(--edge) 1px,transparent 1px),linear-gradient(90deg,var(--edge) 1px,transparent 1px);
+    background-size:58px 58px;-webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000,transparent 72%);mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000,transparent 72%)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 26px;position:relative;z-index:1}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:9px}
+  .eyebrow.g{color:var(--gold)} .eyebrow::before{content:"";width:22px;height:1px;background:currentColor;opacity:.6}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+
+  /* status bar */
+  .statusbar{position:sticky;top:0;z-index:60;background:rgba(8,12,21,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);font-family:var(--mono);font-size:.7rem}
+  .statusbar .wrap{display:flex;align-items:center;gap:18px;height:30px;color:var(--faint);overflow:hidden;white-space:nowrap}
+  .statusbar b{color:var(--muted);font-weight:400}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex:none;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .sb-sep{color:var(--edge-2)} .sb-hide{color:var(--cyan)}
+  @media(max-width:680px){.sb-x{display:none}}
+
+  /* nav */
+  .nav{position:sticky;top:30px;z-index:55;background:rgba(8,12,21,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--edge)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-family:var(--mono);font-size:.9rem;font-weight:500;letter-spacing:.02em}
+  .brand .c{color:var(--cyan)} .brand .g{color:var(--gold)}
+  .nlinks{display:flex;align-items:center;gap:26px}
+  .nlinks a{font-family:var(--mono);font-size:.78rem;color:var(--muted);transition:color .2s}
+  .nlinks a:hover{color:var(--text)}
+  .nlinks a.btn,.nlinks a.btn:hover{color:var(--bg)}
+  .btn{font-family:var(--mono);font-size:.78rem;color:var(--bg);background:var(--gold);padding:8px 15px;border-radius:6px;font-weight:500;display:inline-flex;gap:6px;align-items:center;transition:transform .16s,box-shadow .16s;white-space:nowrap}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,184,75,.25)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--edge-2)}
+  .btn.ghost:hover{border-color:var(--gold-line);box-shadow:none}
+  .btn.cy{background:transparent;color:var(--cyan);border:1px solid var(--cyan-line)}
+  .btn.cy:hover{box-shadow:0 6px 20px rgba(87,198,230,.18)}
+  .mtoggle{display:none;background:none;border:1px solid var(--edge-2);border-radius:6px;color:var(--text);width:40px;height:36px;font-size:1.05rem;cursor:pointer}
+
+  /* role toggle */
+  .roleswitch{display:inline-flex;align-items:center;gap:0;border:1px solid var(--edge-2);border-radius:9px;background:var(--panel);padding:4px;font-family:var(--mono);margin-bottom:6px}
+  .roleswitch .rs-label{font-family:var(--mono);font-size:.68rem;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;padding:0 12px 0 8px}
+  .roleswitch button{font-family:var(--mono);font-size:.76rem;color:var(--muted);background:none;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;transition:color .18s,background .18s,transform .1s;white-space:nowrap;letter-spacing:.01em}
+  .roleswitch button .rk{font-size:.6rem;color:var(--faint);margin-left:6px;letter-spacing:.08em}
+  .roleswitch button.on{color:var(--bg);font-weight:500}
+  .roleswitch button:active{transform:scale(.96)}
+  .roleswitch button.on .rk{color:rgba(8,12,21,.6)}
+  .roleswitch button.ai.on{background:var(--gold)}
+  .roleswitch button.de.on{background:var(--cyan)}
+  .role-lead-note{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-top:14px;letter-spacing:.02em}
+  .role-lead-note b{color:var(--muted);font-weight:400}
+
+  /* hero */
+  .hero{padding:clamp(46px,7vw,78px) 0 40px}
+  .hero h1{font-family:var(--disp);font-weight:600;letter-spacing:-.03em;line-height:1.05;font-size:clamp(1.7rem,5.4vw,3.9rem);max-width:20ch;margin:22px 0 20px}
+  .hero h1 .cy{color:var(--cyan)} .hero h1 .gd{color:var(--gold)}
+  .hero .lede{font-size:clamp(1rem,1.5vw,1.18rem);color:var(--muted);max-width:58ch}
+  .hero .lede b{color:var(--text);font-weight:500}
+  .stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .stat{border:1px solid var(--edge);border-radius:10px;padding:12px 16px;background:var(--panel);min-width:128px}
+  .stat .n{font-family:var(--disp);font-weight:600;font-size:1.35rem;letter-spacing:-.01em;color:var(--text)}
+  .stat .n.cyn{color:var(--cyan)} .stat .n.gdn{color:var(--gold)}
+  .stat .l{font-family:var(--mono);font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);margin-top:3px}
+
+  /* console (the signature) */
+  .console{margin-top:34px;border:1px solid var(--edge-2);border-radius:14px;background:linear-gradient(180deg,var(--panel),rgba(13,20,32,.5));overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);transition:border-color .35s,box-shadow .35s}
+  /* lens accent: console border/glow follows the active toggle */
+  .console.lens-de{border-color:var(--cyan-line);box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 1px var(--cyan-soft) inset}
+  .console.lens-ai{border-color:var(--gold-line);box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 1px var(--gold-soft) inset}
+  /* flash: a quick pulse so the eye catches that the lens changed */
+  @keyframes consoleFlash{0%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 2px transparent}30%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 34px 2px rgba(120,160,200,.5)}100%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 2px transparent}}
+  .console.flash{animation:consoleFlash .7s ease}
+  .console.lens-de.flash{animation:consoleFlashDe .7s ease}
+  .console.lens-ai.flash{animation:consoleFlashAi .7s ease}
+  @keyframes consoleFlashDe{0%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7)}30%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 40px 3px var(--cyan-line)}100%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 1px var(--cyan-soft) inset}}
+  @keyframes consoleFlashAi{0%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7)}30%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 40px 3px var(--gold-line)}100%{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 1px var(--gold-soft) inset}}
+  .con-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--edge);background:rgba(0,0,0,.2)}
+  .lights{display:flex;gap:7px}.lights i{width:11px;height:11px;border-radius:50%;display:block;opacity:.85}
+  .lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+  .con-title{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+  .con-title b{color:var(--text);font-weight:500}
+  .con-lat{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--faint)}
+  .con-lat span{color:var(--cyan)}
+  .con-tabs{display:flex;gap:4px;padding:12px 16px 0}
+  .tab{font-family:var(--mono);font-size:.78rem;color:var(--muted);background:none;border:1px solid transparent;border-bottom:none;padding:9px 16px;border-radius:8px 8px 0 0;cursor:pointer;transition:.18s}
+  .tab.on{color:var(--text);background:var(--panel-2);border-color:var(--edge)}
+  .tab .k{font-size:.64rem;color:var(--faint);margin-left:7px}
+  .tab.ask.on{color:var(--gold)} .tab.sql.on{color:var(--cyan)}
+  .con-body{padding:18px 16px 20px;background:var(--panel-2);border-top:1px solid var(--edge)}
+  .prompt{display:flex;align-items:center;gap:11px;border:1px solid var(--edge-2);border-radius:9px;background:var(--bg);padding:0 14px;transition:border-color .2s}
+  .prompt:focus-within{border-color:var(--gold-line)}
+  .prompt.sqlmode:focus-within{border-color:var(--cyan-line)}
+  .pchar{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--gold)}
+  .prompt.sqlmode .pchar{color:var(--cyan)}
+  .prompt input{flex:1;background:none;border:none;color:var(--text);font-family:var(--mono);font-size:.9rem;padding:14px 0;outline:none}
+  .prompt input::placeholder{color:var(--faint)}
+  .run{font-family:var(--mono);font-size:.74rem;color:var(--bg);background:var(--gold);border:none;border-radius:6px;padding:7px 13px;cursor:pointer;font-weight:500}
+  .prompt.sqlmode .run{background:var(--cyan)}
+  .examples{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+  .ex{font-family:var(--mono);font-size:.72rem;color:var(--muted);background:var(--bg);border:1px solid var(--edge);border-radius:20px;padding:6px 12px;cursor:pointer;transition:.18s;white-space:nowrap}
+  .ex:hover{border-color:var(--gold-line);color:var(--text)}
+  .prompt.sqlmode ~ .examples .ex:hover{border-color:var(--cyan-line)}
+
+  /* pipeline */
+  .pipe{display:flex;align-items:center;gap:0;margin:18px 0 4px;flex-wrap:wrap;row-gap:10px}
+  .pstage{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.68rem;color:var(--faint);opacity:.5;transition:opacity .25s,color .25s}
+  .pstage.lit{opacity:1;color:var(--cyan)} .pstage.warm.lit{color:var(--gold)}
+  .pstage .pd{width:8px;height:8px;border-radius:2px;background:currentColor;transform:rotate(45deg);box-shadow:0 0 0 0 currentColor;transition:.25s}
+  .pstage.lit .pd{box-shadow:0 0 10px currentColor}
+  .pstage .pt{font-size:.6rem;color:var(--faint);opacity:0;transition:opacity .25s}
+  .pstage.lit .pt{opacity:1}
+  .parrow{width:22px;height:1px;background:var(--edge-2);margin:0 8px;flex:none}
+  @media(max-width:620px){.parrow{width:12px;margin:0 5px}.pstage .pt{display:none}}
+
+  .results{margin-top:16px;min-height:60px}
+  .rmeta{font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .rmeta .ok{color:var(--green)} .rmeta .warn{color:var(--gold)} .rmeta b{color:var(--cyan)}
+  .gate{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:3px 9px}
+  .gate.pass{color:var(--green);border:1px solid rgba(95,211,160,.4);background:rgba(95,211,160,.08)}
+  .gate.hold{color:var(--gold);border:1px solid var(--gold-line);background:var(--gold-soft)}
+  /* answer */
+  .answer{border-left:2px solid var(--gold);padding:2px 0 2px 18px;margin-bottom:18px}
+  .answer p{color:var(--text);font-size:1.02rem;line-height:1.6;font-family:var(--body)}
+  .answer.hold{border-color:var(--gold);opacity:.95}
+  .answer.hold p{color:var(--muted)}
+  .src-h{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 10px}
+  .src{display:flex;gap:12px;padding:11px 13px;border:1px solid var(--edge);border-radius:9px;background:var(--bg);margin-bottom:8px;transition:border-color .2s}
+  .src:hover{border-color:var(--cyan-line)}
+  .src .si{font-family:var(--mono);font-size:.64rem;color:var(--cyan);flex:none;padding-top:2px}
+  .src .st{font-size:.92rem;color:#C7D3E0;line-height:1.5}
+  .src .sb{font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-top:5px;display:block}
+  .src mark{background:var(--cyan-soft);color:var(--cyan);padding:0 2px;border-radius:2px}
+  /* table */
+  .tscroll{overflow-x:auto;border:1px solid var(--edge);border-radius:9px}
+  table.res{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8rem;min-width:440px}
+  table.res th{background:var(--bg);color:var(--cyan);text-align:left;padding:10px 13px;font-weight:500;border-bottom:1px solid var(--edge-2);letter-spacing:.03em;white-space:nowrap}
+  table.res td{padding:9px 13px;border-bottom:1px solid var(--edge);color:#C7D3E0;vertical-align:top}
+  table.res tr:last-child td{border-bottom:none}
+  table.res tr:hover td{background:rgba(87,198,230,.04)}
+  .err{font-family:var(--mono);font-size:.82rem;color:#ff8a7a;border:1px solid rgba(255,138,122,.3);background:rgba(255,138,122,.06);border-radius:8px;padding:12px 14px}
+  .err b{color:var(--gold)}
+  .cursor{display:inline-block;width:8px;height:1.05em;background:var(--gold);vertical-align:text-bottom;animation:blink 1s steps(2) infinite;margin-left:2px}
+  @keyframes blink{50%{opacity:0}}
+
+  /* sections */
+  .sec{padding:92px 0;border-top:1px solid var(--edge)}
+
+  .sec-h{max-width:720px;margin-bottom:44px;display:flex;flex-direction:column;gap:14px}
+  .sec-h h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.35rem);letter-spacing:-.02em;line-height:1.08}
+  .sec-h p{color:var(--muted);font-size:1rem;max-width:600px}
+  .sec-h code{font-family:var(--mono);font-size:.85em;color:var(--cyan);background:var(--cyan-soft);padding:1px 6px;border-radius:4px}
+
+  /* experience */
+  .exp-item{display:grid;grid-template-columns:190px 1fr;gap:34px;padding:28px 0;border-top:1px solid var(--edge);position:relative}
+  .exp-item:first-child{border-top:none}
+  .exp-when{font-family:var(--mono);font-size:.76rem;color:var(--faint);padding-top:5px}
+  .exp-when .now{color:var(--gold)}
+  .exp-role{font-family:var(--disp);font-weight:600;font-size:1.18rem;letter-spacing:-.01em}
+  .exp-co{font-size:.9rem;color:var(--muted);margin:2px 0 15px}
+  .exp-item.lead::before{content:"";position:absolute;left:-26px;top:28px;bottom:28px;width:2px;background:linear-gradient(var(--cyan),var(--gold));border-radius:2px}
+  .exp ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .exp li{position:relative;padding-left:19px;color:#C7D3E0;font-size:.95rem}
+  .exp li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:1px;background:var(--cyan);opacity:.7;transform:rotate(45deg)}
+  .exp li b{color:var(--text);font-weight:600}
+  .exp li .ld{color:var(--cyan);font-weight:600}
+  .exp-item.lead li .ld{color:var(--gold)}
+  .live-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-line);border-radius:20px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+
+  /* skills */
+  .sk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .sk-card{border:1px solid var(--edge);border-radius:12px;padding:20px 20px 22px;background:var(--panel)}
+  .sk-card.hot{border-color:var(--gold-line);background:linear-gradient(180deg,var(--gold-soft),var(--panel))}
+  .sk-card h3{font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:15px;font-weight:500}
+  .sk-card.hot h3{color:var(--gold)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chips span{font-family:var(--mono);font-size:.76rem;color:#8FA2B8;border:1px solid var(--edge-2);border-radius:6px;padding:5px 9px;background:var(--bg);transition:.2s}
+  .chips span.k{color:var(--text);font-weight:700;border-color:var(--cyan-line);background:var(--cyan-soft)}
+  .sk-card.hot .chips span.k{border-color:var(--gold-line);background:var(--gold-soft)}
+  .chips span:hover{border-color:var(--cyan-line);color:var(--text)}
+  .sk-card.hot .chips span:hover{border-color:var(--gold-line)}
+
+  /* projects */
+  .pj{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+  .pj-card{border:1px solid var(--edge);border-radius:14px;padding:26px;background:var(--panel);display:flex;flex-direction:column;transition:.25s}
+  .pj-card:hover{border-color:var(--edge-2);transform:translateY(-3px)}
+  .pj-card.feat{border-color:var(--gold-line)}
+  .pj-kind{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .pj-card.sub .pj-kind{color:var(--cyan)}
+  .pj-card h3{font-family:var(--disp);font-weight:600;font-size:1.28rem;letter-spacing:-.01em;margin-bottom:11px}
+  .pj-card p{color:var(--muted);font-size:.94rem;margin-bottom:18px;flex:1}
+  .pj-card p b{color:#C7D3E0;font-weight:500}
+  .pj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  .pj-tags span{font-family:var(--mono);font-size:.68rem;color:var(--faint)}
+  .pj-tags span::after{content:"·";margin-left:6px;color:var(--edge-2)} .pj-tags span:last-child::after{content:""}
+  .pj-link{font-family:var(--mono);font-size:.78rem;color:var(--gold);display:inline-flex;gap:6px;align-self:flex-start;border-bottom:1px solid transparent;transition:.2s}
+  .pj-card.sub .pj-link{color:var(--cyan)}
+  .pj-link:hover{border-color:currentColor}
+
+  /* certs */
+  .ct-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+  .ct{display:flex;align-items:center;gap:15px;border:1px solid var(--edge);border-radius:11px;padding:15px 17px;background:var(--panel);transition:.2s}
+  .ct:hover{border-color:var(--edge-2)} .ct.aws{border-color:var(--gold-line)}
+  .ct .bd{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:.6rem;font-weight:500;line-height:1.1;text-align:center;background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line)}
+  .ct.plain .bd{background:var(--panel-3);color:var(--muted);border-color:var(--edge-2)}
+  .ct .cn{font-size:.92rem;font-weight:500;color:var(--text);line-height:1.35}
+  .ct .cm{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-top:3px}
+  .ct .vf{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--gold);border-bottom:1px solid transparent;white-space:nowrap}
+  .ct .vf:hover{border-color:var(--gold-line)}
+  .ct .ip{margin-left:auto;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+
+  /* contact */
+  .cbox{border:1px solid var(--edge-2);border-radius:18px;padding:clamp(32px,6vw,60px);background:linear-gradient(180deg,var(--panel),rgba(13,20,32,.35));text-align:center}
+  .cbox h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.8rem,4.2vw,2.9rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:15px}
+  .cbox h2 .cy{color:var(--cyan)} .cbox h2 .gd{color:var(--gold)}
+  .cbox p{color:var(--muted);max-width:50ch;margin:0 auto 30px;font-size:1.04rem}
+  .clinks{display:flex;flex-wrap:wrap;gap:11px;justify-content:center}
+  .cl{font-family:var(--mono);font-size:.84rem;color:var(--text);border:1px solid var(--edge-2);border-radius:8px;padding:11px 17px;display:inline-flex;gap:8px;align-items:center;transition:.18s}
+  .cl:hover{border-color:var(--gold-line);transform:translateY(-1px)}
+  .cl svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.7}
+
+  footer{border-top:1px solid var(--edge);padding:30px 0 44px}
+  .ft{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+  .ft a{color:var(--muted)} .ft a:hover{color:var(--gold)}
+
+  /* boot overlay */
+  .boot{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+  .boot[hidden]{display:none}
+  .boot-in{width:min(560px,88vw);font-family:var(--mono);font-size:.82rem}
+  .boot-line{color:var(--muted);white-space:pre-wrap;line-height:1.9;opacity:0}
+  .boot-line.show{opacity:1}
+  .boot-line .ok2{color:var(--green)} .boot-line .cy{color:var(--cyan)} .boot-line .gd{color:var(--gold)}
+  .boot-skip{margin-top:20px;font-size:.68rem;color:var(--faint)}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:840px){
+    .nlinks{position:fixed;inset:90px 0 auto 0;flex-direction:column;gap:0;align-items:stretch;background:rgba(8,12,21,.98);border-bottom:1px solid var(--edge);max-height:0;overflow:hidden;transition:max-height .3s;padding:0 26px}
+    .nlinks.open{max-height:420px;padding:8px 26px 20px}
+    .nlinks a{padding:12px 0;border-bottom:1px solid var(--edge);font-size:.88rem}
+    .nlinks .btn{margin-top:12px;justify-content:center}
+    .mtoggle{display:block}
+    .exp-item{grid-template-columns:1fr;gap:9px}.exp-item.lead::before{left:-14px}
+    .sk-grid,.ct-grid,.pj{grid-template-columns:1fr}
+  }
+  @media(max-width:560px){
+    .hero h1{margin:18px 0 16px}
+    .roleswitch{flex-wrap:wrap;row-gap:4px}
+    .roleswitch .rs-label{padding:4px 8px;width:100%}
+    .roleswitch button{flex:1}
+    .pipe{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+    .pipe::-webkit-scrollbar{display:none}
+    .pstage{flex:none}
+    .src-h{font-size:.6rem;letter-spacing:.1em;line-height:1.5}
+    .rmeta{font-size:.66rem;gap:10px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto} *{transition:none!important;animation:none!important}
+    .reveal{opacity:1!important;transform:none!important} .cursor{display:none}
+  }
+</style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}.console{display:none}.boot{display:none}</style></noscript>
+</head>
+<body>
+
+<div class="boot" id="boot" hidden><div class="boot-in" id="bootIn"></div></div>
+
+<div class="statusbar"><div class="wrap">
+  <span class="dot"></span><b>career.db</b>
+  <span class="sb-sep">·</span><span>connected</span>
+  <span class="sb-sep sb-x">·</span><span class="sb-x"><b id="sbRoles">4</b> roles</span>
+  <span class="sb-sep sb-x">·</span><span class="sb-x"><b id="sbFacts">0</b> facts indexed</span>
+  <span class="sb-sep sb-x">·</span><span class="sb-x">avg query <b id="sbLat">-</b></span>
+  <span class="sb-sep"></span><span class="sb-hide" style="margin-left:auto" id="sbClock"></span>
+</div></div>
+
+<header class="nav"><div class="wrap nav-in">
+  <a href="#top" class="brand">abhishek<span class="c">.</span>shukla<span class="g">()</span></a>
+  <nav class="nlinks" id="nlinks">
+    <a href="#console">Console</a><a href="#work">Work</a><a href="#skills">Skills</a>
+    <a href="#projects">Projects</a><a href="#certs">Certs</a><a href="#contact">Contact</a>
+    <a href="Abhishek_Shukla_Resume.pdf" class="btn js-resume" target="_blank" rel="noopener">Résumé ↗</a>
+  </nav>
+  <button class="mtoggle" id="mtoggle" aria-label="Menu" aria-expanded="false">☰</button>
+</div></header>
+
+<main id="top">
+  <section class="hero wrap" id="console">
+    <span class="eyebrow g" id="heroEyebrow">Senior Data Engineer · AI Engineer</span>
+    <h1 id="heroH1">AI is <span class="gd">API calls over data you can trust</span>. I build <span class="cy">both halves</span>. Most people only do the second.</h1>
+    <p class="lede" id="heroSpine"><b>Abhishek Shukla.</b> 5+ years building AWS data platforms, and the LLM and agent systems that run on them. Ask the console anything about my work.</p>
+
+    <div class="roleswitch" role="tablist" aria-label="Choose where to start">
+      <span class="rs-label">Start from:</span>
+      <button class="de on" id="roleDe" role="tab" aria-selected="true">the data<span class="rk">platform</span></button>
+      <button class="ai" id="roleAi" role="tab" aria-selected="false">the AI<span class="rk">RAG · agents · evals</span></button>
+    </div>
+    <p class="role-lead-note" id="roleLeadNote"><b>Same engineer, same system, entered from the data layer up.</b></p>
+
+    <div class="stats" aria-label="career highlights">
+      <div class="stat"><div class="n cyn">1 TB</div><div class="l">Per day · RAN platform</div></div>
+      <div class="stat"><div class="n cyn">19,500</div><div class="l">Mobile sites served</div></div>
+      <div class="stat"><div class="n cyn">5+ yrs</div><div class="l">AWS data platforms</div></div>
+      <div class="stat"><div class="n gdn">Eval-gated</div><div class="l">LLM + agents · shipped</div></div>
+    </div>
+
+    <div class="console">
+      <div class="con-bar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div class="con-title"><b>career.db</b> · query console</div>
+        <div class="con-lat">latency <span id="latOut">0.00ms</span></div>
+      </div>
+      <div class="con-tabs">
+        <button class="tab ask on" id="tabAsk" data-mode="ask">ASK<span class="k">natural language · RAG</span></button>
+        <button class="tab sql" id="tabSql" data-mode="sql">SQL<span class="k">query the tables</span></button>
+      </div>
+      <div class="con-body">
+        <div class="prompt" id="prompt">
+          <span class="pchar" id="pchar">?</span>
+          <input id="qinput" autocomplete="off" spellcheck="false" aria-label="Query input" placeholder="ask about my experience…">
+          <button class="run" id="runBtn">run ⏎</button>
+        </div>
+        <div class="examples" id="examples"></div>
+
+        <div class="pipe" id="pipe">
+          <div class="pstage" data-s="parse"><span class="pd"></span><span>PARSE</span><span class="pt" id="tParse"></span></div>
+          <span class="parrow"></span>
+          <div class="pstage" data-s="scan"><span class="pd"></span><span>SCAN</span><span class="pt" id="tScan"></span></div>
+          <span class="parrow"></span>
+          <div class="pstage" data-s="rank"><span class="pd"></span><span>RANK</span><span class="pt" id="tRank"></span></div>
+          <span class="parrow"></span>
+          <div class="pstage warm" data-s="compose"><span class="pd"></span><span>COMPOSE</span><span class="pt" id="tComp"></span></div>
+          <span class="parrow"></span>
+          <div class="pstage warm" data-s="eval"><span class="pd"></span><span>EVAL</span><span class="pt" id="tEval"></span></div>
+          <span class="parrow"></span>
+          <div class="pstage warm" data-s="serve"><span class="pd"></span><span>SERVE</span><span class="pt" id="tServe"></span></div>
+        </div>
+
+        <div class="results" id="results" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="work"><div class="wrap">
+    <div class="sec-h reveal"><span class="eyebrow">Experience</span>
+      <h2>All the way down the stack, from data platform to AI.</h2>
+      <p>Intern to architect at one company. Same rows the console queries: <code>SELECT * FROM experience</code></p></div>
+    <div class="exp">
+      <div class="exp-item lead reveal"><div class="exp-when"><span class="now">Jan 2026 - Present</span></div><div>
+        <div class="exp-role">Associate Tech Architect, Data &amp; AI Engineering</div><div class="exp-co">Quantiphi Analytics Solutions · Mumbai</div>
+        <ul>
+          <li><span class="ld">Telecom analytics platform:</span> <b>~1 TB/day</b> of RAN data from <b>19,500 sites</b>, serving <b>150,000+ cell metrics</b> from Iceberg.<span class="live-tag">Production</span></li>
+          <li><span class="ld">Multi-vendor schema registry:</span> Ericsson, Nokia and Huawei schemas versioned in DynamoDB. New counters ship with <b>no code deploy</b>.</li>
+          <li><span class="ld">Rust rewrite:</span> Python ETL Lambda rewritten in Rust, <b>8 minutes to 30 seconds</b>.</li>
+          <li><span class="ld">Event-driven enrichment:</span> <b>100K+ SQS messages</b> per Lambda invocation. Iceberg compaction cut file count <b>10x</b>.</li>
+          <li><span class="ld">Performance debugging:</span> Fixed a 100% pre-prod failure, saving <b>85-230 s per invocation</b> with 531 tests green.</li>
+          <li><span class="ld">RAG and text-to-SQL:</span> Cited answers over governed data on Amazon Bedrock, gated by an <b>eval harness in CI</b>.</li>
+          <li><span class="ld">Agent on Bedrock AgentCore:</span> <b>In use by internal teams</b>, with MCP tools, tenant-isolated memory and tracing.</li>
+        </ul></div></div>
+      <div class="exp-item reveal"><div class="exp-when">Apr 2023 - Dec 2025</div><div>
+        <div class="exp-role">Senior Data Engineer</div><div class="exp-co">Quantiphi Analytics Solutions · Mumbai</div>
+        <ul>
+          <li><span class="ld">Multi-tenant lakehouse:</span> Iceberg on S3 with Lake Formation, serving <b>15+ tenants</b>.</li>
+          <li><span class="ld">Audience counting:</span> Roaring Bitmaps over <b>billions of rows</b>, sub-second counts.</li>
+          <li><span class="ld">Near-real-time ingestion:</span> Reporting latency from <b>6 hours to under 30 minutes</b>.</li>
+          <li><span class="ld">Warehouse performance:</span> Redshift BI queries from <b>3 minutes to under 30 seconds</b>.</li>
+          <li><span class="ld">GenAI reporting app:</span> A <b>2-day manual process</b> down to <b>under 2 hours</b> on Bedrock.</li>
+          <li><span class="ld">API integrations:</span> <b>5+ third-party APIs</b>, 100% daily reporting coverage.</li>
+        </ul></div></div>
+      <div class="exp-item reveal"><div class="exp-when">Aug 2021 - Mar 2023</div><div>
+        <div class="exp-role">Data Engineer</div><div class="exp-co">Quantiphi Analytics Solutions · Mumbai</div>
+        <ul>
+          <li><span class="ld">Sports analytics ETL:</span> <b>50+ GB/day</b> of computer-vision data for a Bundesliga client, plus <b>5 QuickSight dashboards</b> used by coaching staff.</li>
+          <li><span class="ld">Contact-center analytics:</span> IVR call containment up <b>12% across 15+ KPIs</b>.</li>
+        </ul></div></div>
+      <div class="exp-item reveal"><div class="exp-when">Feb 2021 - Aug 2021</div><div>
+        <div class="exp-role">Data Engineer Intern</div><div class="exp-co">Quantiphi Analytics Solutions · Mumbai</div>
+        <ul><li>Spark and AWS pipeline that cut annotation time by <b>35%</b>.</li></ul></div></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="skills"><div class="wrap">
+    <div class="sec-h reveal"><span class="eyebrow">Stack</span>
+      <h2>Full stack in the literal sense, from data up through AI.</h2>
+</div>
+    <div class="sk-grid">
+      <div class="sk-card hot reveal" id="skAI"><h3>AI / LLM &amp; Agents</h3><div class="chips"><span class="k">Amazon Bedrock</span><span>Anthropic Claude</span><span class="k">RAG</span><span class="k">Text-to-SQL</span><span class="k">Vector stores</span><span>OpenSearch</span><span>pgvector</span><span>Prompt engineering</span><span class="k">Bedrock AgentCore</span><span class="k">MCP</span><span class="k">LLM-as-judge evals</span><span>OpenTelemetry</span></div></div>
+      <div class="sk-card hot reveal" id="skData"><h3>Data Engineering</h3><div class="chips"><span class="k">Apache Spark</span><span class="k">PySpark</span><span class="k">Apache Iceberg</span><span>EMR Serverless</span><span>Parquet</span><span class="k">ETL / ELT</span><span class="k">CDC</span><span>Streaming</span><span class="k">Star schema · SCD2</span><span>Data quality</span><span>Late data · backfills</span></div></div>
+      <div class="sk-card reveal"><h3>AWS</h3><div class="chips"><span>S3</span><span class="k">Lambda</span><span class="k">Glue</span><span class="k">EMR</span><span class="k">Redshift</span><span>Athena</span><span class="k">DynamoDB</span><span>Aurora PostgreSQL</span><span class="k">Kinesis</span><span>DMS</span><span>SQS</span><span>EventBridge</span><span class="k">Step Functions</span><span>Lake Formation</span></div></div>
+      <div class="sk-card reveal"><h3>Languages · Databases · Ops</h3><div class="chips"><span class="k">Python</span><span class="k">SQL</span><span class="k">Rust</span><span>TypeScript</span><span class="k">Aurora PostgreSQL</span><span>ClickHouse</span><span>MySQL</span><span class="k">Terraform</span><span class="k">Apache Airflow</span><span class="k">Docker</span><span>GitLab CI/CD</span><span>GitHub Actions</span><span>pytest</span></div></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="projects"><div class="wrap">
+    <div class="sec-h reveal"><span class="eyebrow">Projects</span><h2>Public proof, not just claims.</h2>
+</div>
+    <div class="pj">
+      <div class="pj-card feat reveal"><div class="pj-kind">Flagship · public reference implementation</div>
+        <h3>Governed LLM Analytics</h3>
+        <p>Text-to-SQL over a governed warehouse where the LLM emits <b>validated query intent over a constrained vocabulary</b> rather than raw SQL, so it cannot express a query the governance layer hasn't sanctioned. Ships with an <b>eval harness</b> (golden datasets, LLM-as-judge via Bedrock Claude, retrieval + generation metrics) wired into a CI regression gate, plus a written decision log of rejected alternatives.</p>
+        <div class="pj-tags"><span>AWS Bedrock</span><span>Text-to-SQL</span><span>Governance</span><span>Evals</span><span>GitHub Actions</span></div>
+        <a href="https://github.com/abhis5/governed-llm-analytics" target="_blank" rel="noopener" class="pj-link js-flagship">View repository ↗</a></div>
+      <div class="pj-card sub reveal"><div class="pj-kind">Product · React</div><h3>Paisa</h3>
+        <p>A personal-finance SPA built end to end, with India-specific features: <b>UPI categorization, financial-year handling, bank-CSV import</b>.</p>
+        <div class="pj-tags"><span>React</span><span>TypeScript</span><span>UX</span></div></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="certs"><div class="wrap">
+    <div class="sec-h reveal"><span class="eyebrow">Certifications</span><h2>Verified, current, on-target.</h2></div>
+    <div class="ct-grid">
+      <div class="ct aws reveal"><div class="bd">AWS<br>PRO</div><div style="flex:1"><div class="cn">AWS Certified Solutions Architect - Professional</div><div class="cm">Amazon Web Services · 2026</div></div><a class="vf" href="https://www.credly.com/badges/698d2ee6-3a43-4798-865c-151df203ced1" target="_blank" rel="noopener">Verify on Credly ↗</a></div>
+      <div class="ct aws reveal"><div class="bd">AWS<br>DEA</div><div style="flex:1"><div class="cn">AWS Certified Data Engineer - Associate</div><div class="cm">Amazon Web Services · 2026</div></div><a class="vf" href="https://www.credly.com/badges/a778285e-a10f-4148-9838-48a1b8e1d8ed" target="_blank" rel="noopener">Verify on Credly ↗</a></div>
+      <div class="ct plain reveal"><div class="bd">SNOW</div><div style="flex:1"><div class="cn">Snowflake SnowPro Core</div><div class="cm">Snowflake · 2023</div></div></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="contact"><div class="wrap">
+    <div class="cbox reveal"><h2 id="contactH2">I build the <span class="cy">data layer</span> AI depends on, then build the <span class="gd">AI</span> on it.</h2>
+      <p id="contactP">Open to Senior/Staff Data Engineer and applied-AI roles. Based in Mumbai, open to remote. Fastest reach is email.</p>
+      <div class="clinks">
+        <a class="cl js-email" href="mailto:AbhishekShukla.DE@gmail.com"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="js-email-text">AbhishekShukla.DE@gmail.com</span></a>
+        <a class="cl js-linkedin" href="https://linkedin.com/in/abhis5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v0M11 17v-4a2 2 0 0 1 4 0v4"/></svg><span class="js-linkedin-text">linkedin.com/in/abhis5</span></a>
+        <a class="cl js-github" href="https://github.com/abhis5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C7.2 3.3 6.1 3.6 6.1 3.6a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.7 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><span class="js-github-text">github.com/abhis5</span></a>
+      </div></div>
+  </div></section>
+</main>
+
+<footer><div class="wrap ft">
+  <span>© <span id="yr"></span> Abhishek Shukla · Mumbai, India · built as a live data system</span>
+  <span><a class="js-resume" href="Abhishek_Shukla_Resume.pdf" target="_blank" rel="noopener">open résumé ↗</a></span>
+</div></footer>
+
+<script>
+"use strict";
+/* ============================================================
+   CONFIG:  edit these values, then push to GitHub. Nothing else to change.
+   ------------------------------------------------------------
+   resumeURL options:
+     • Keep the PDF in this repo (default):  "Abhishek_Shukla_Resume.pdf"
+     • Google Drive (share = "Anyone with the link"):
+         preview:  "https://drive.google.com/file/d/FILE_ID/view?usp=sharing"
+         download: "https://drive.google.com/uc?export=download&id=FILE_ID"
+     • GitHub raw:
+         "https://raw.githubusercontent.com/USER/REPO/main/resume.pdf"
+   ============================================================ */
+const CONFIG = {
+  resumeURL:    "Abhishek_Shukla_Resume.pdf",   // keep the PDF next to index.html with exactly this name
+  resumeDE:     "Abhishek_Shukla_Resume.pdf",
+  resumeAI:     "Abhishek_Shukla_Resume.pdf",
+  email:        "AbhishekShukla.DE@gmail.com",
+  linkedin:     "https://linkedin.com/in/abhis5",
+  github:       "https://github.com/abhis5",
+  flagshipRepo: "https://github.com/abhis5/governed-llm-analytics"
+};
+
+/* ---------------- career, as a database ---------------- */
+const DB = {
+  experience:[
+    {role:"Associate Tech Architect",company:"Quantiphi",start_year:2026,end:"present",years:0.6,focus:"Data & AI Engineering",stack:["Iceberg","Rust","Bedrock","AgentCore","Redshift","DynamoDB","Step Functions"]},
+    {role:"Senior Data Engineer",company:"Quantiphi",start_year:2023,end:"2025",years:2.75,focus:"Lakehouse / Warehouse",stack:["Iceberg","Kinesis","EMR","Redshift","Aurora","Bedrock"]},
+    {role:"Data Engineer",company:"Quantiphi",start_year:2021,end:"2023",years:1.6,focus:"ETL / Analytics",stack:["PySpark","Glue","Step Functions","QuickSight"]},
+    {role:"Data Engineer Intern",company:"Quantiphi",start_year:2021,end:"2021",years:0.5,focus:"Prototyping",stack:["Spark","AWS"]}
+  ],
+  skills:[
+    {name:"AWS Bedrock",category:"ai_llm",level:"production"},{name:"Anthropic Claude",category:"ai_llm",level:"production"},
+    {name:"RAG",category:"ai_llm",level:"production"},{name:"Text-to-SQL",category:"ai_llm",level:"production"},
+    {name:"Eval engineering",category:"ai_llm",level:"production"},{name:"Vector search",category:"ai_llm",level:"production"},
+    {name:"Bedrock AgentCore",category:"ai_llm",level:"production"},{name:"MCP",category:"ai_llm",level:"production"},
+    {name:"Apache Spark",category:"data_eng",level:"expert"},{name:"PySpark",category:"data_eng",level:"expert"},
+    {name:"Apache Iceberg",category:"data_eng",level:"expert"},{name:"EMR Serverless",category:"data_eng",level:"production"},
+    {name:"dbt",category:"data_eng",level:"production"},{name:"CDC",category:"data_eng",level:"production"},
+    {name:"Redshift",category:"aws",level:"expert"},{name:"DynamoDB",category:"aws",level:"expert"},
+    {name:"Glue",category:"aws",level:"production"},{name:"Step Functions",category:"aws",level:"expert"},
+    {name:"Kinesis",category:"aws",level:"production"},{name:"Lambda",category:"aws",level:"expert"},
+    {name:"SQS FIFO",category:"aws",level:"production"},{name:"Lake Formation",category:"aws",level:"production"},
+    {name:"Python",category:"lang",level:"expert"},{name:"Rust",category:"lang",level:"production"},{name:"SQL",category:"lang",level:"expert"},
+    {name:"TypeScript",category:"lang",level:"proficient"},{name:"Terraform",category:"ops",level:"production"},
+    {name:"Apache Airflow",category:"ops",level:"production"},{name:"Docker",category:"ops",level:"production"}
+  ],
+  projects:[
+    {name:"RAN Analytics Platform (1 TB/day)",type:"platform",status:"production",stack:["Iceberg","DynamoDB","Step Functions","Lambda","SQS"]},
+    {name:"Governed LLM Analytics",type:"flagship",status:"building",stack:["Bedrock","Text-to-SQL","Evals","GitHub Actions"]},
+    {name:"Bedrock AgentCore Agent",type:"agent",status:"production",stack:["AgentCore","MCP","OAuth"]},
+    {name:"Multi-Tenant Lakehouse",type:"platform",status:"shipped",stack:["Iceberg","S3","Lake Formation","Aurora"]},
+    {name:"Roaring Bitmap Audience Counter",type:"distributed",status:"shipped",stack:["EMR","Lambda"]},
+    {name:"GenAI Reporting App",type:"genai",status:"shipped",stack:["Bedrock","Claude","Python"]},
+    {name:"Paisa",type:"product",status:"shipped",stack:["React","TypeScript"]}
+  ],
+  certifications:[
+    {name:"AWS Solutions Architect Professional",issuer:"AWS",year:2026,status:"active"},
+    {name:"AWS Data Engineer Associate",issuer:"AWS",year:2026,status:"active"},
+    {name:"Snowflake SnowPro Core",issuer:"Snowflake",year:2023,status:"active"}
+  ],
+  metrics:[
+    {metric:"data_volume",value:"1 TB/day",system:"RAN platform"},
+    {metric:"sites_served",value:"19,500",system:"RAN platform"},
+    {metric:"file_count",before:"baseline",after:"10x fewer",system:"Iceberg compaction"},
+    {metric:"etl_runtime",before:"8 min (Python)",after:"30 sec (Rust)",system:"RAN ETL Lambda"},
+    {metric:"aggregation_time",before:"85-230s",after:"early-exit",system:"Lambda fix"},
+    {metric:"reporting_time",before:"2 days",after:"2 hours",system:"GenAI app"},
+    {metric:"query_latency",before:"3 min",after:"30 sec",system:"Redshift"},
+    {metric:"pipeline_latency",before:"6 hours",after:"30 min",system:"Kinesis+Redshift"}
+  ]
+};
+
+/* facts corpus for retrieval */
+const FACTS = [
+  {t:"Owns three stages of a serverless RAN analytics platform processing 1 TB/day of performance-counter data from 19,500 mobile sites for a UK telecom operator, co-delivered with AWS ProServe, landing in Apache Iceberg and serving 150,000+ cell metrics across 6 time granularities.",src:"Associate Tech Architect @ Quantiphi",tags:["ran","telecom","platform","scale","iceberg","serverless","1tb","proserve","production","volume","data","spark","pyspark","emr"]},
+  {t:"Built a multi-vendor schema management system: pluggable adapters for 3 vendors across 5 stream formats (Ericsson, Nokia, Huawei) extract counter definitions into a versioned DynamoDB registry that detects breaking changes between vendor releases and propagates schema to 4 stores at once, so new counters land without a code deploy.",src:"Associate Tech Architect @ Quantiphi",tags:["schema","registry","dynamodb","vendor","adapters","versioning","evolution","multi-target","data","platform"]},
+  {t:"Engineered an event-driven enrichment layer with cross-file deduplication in DynamoDB and a batcher Lambda handling 100K+ SQS messages per invocation via parallel poll, FIFO-send and delete workers.",src:"Associate Tech Architect @ Quantiphi",tags:["event-driven","enrichment","sqs","fifo","lambda","deduplication","dynamodb","serverless","pipeline","scale"]},
+  {t:"Built an Iceberg compaction workflow that cut file count 10x, reducing query planning time and S3 LIST cost on every downstream read.",src:"Associate Tech Architect @ Quantiphi",tags:["iceberg","compaction","optimization","cost","performance","file-format","partitioning","s3","lake"]},
+  {t:"Rewrote a Python ETL Lambda on the RAN platform in Rust, cutting runtime from 8 minutes to 30 seconds (16x) on the same workload, taking it from over half the 15-minute Lambda limit to well clear of it.",src:"Associate Tech Architect @ Quantiphi",tags:["rust","python","rewrite","etl","lambda","performance","optimization","runtime","speed","latency","serverless"]},
+  {t:"Diagnosed a 100% pre-prod failure on an aggregation Lambda caused by unbounded DynamoDB existence checks, and fixed it with early-exit lookups and parallelized calls: 85–230s saved per invocation, zero logic changes, 531 tests green.",src:"Associate Tech Architect @ Quantiphi",tags:["debugging","performance","optimization","dynamodb","lambda","testing","reliability","aggregation","diagnosis"]},
+  {t:"Built self-healing re-aggregation supporting 90-day late arrivals cascading through every granularity level, using DynamoDB conditional writes and GSI-based querying.",src:"Associate Tech Architect @ Quantiphi",tags:["self-healing","late-arriving","backfill","aggregation","dynamodb","idempotent","reliability","pipeline","data"]},
+  {t:"Leads a RAG / text-to-SQL initiative over governed warehouse data, delivering natural-language querying of S3, Iceberg and Redshift returning cited answers via AWS Bedrock and Anthropic Claude, from PoC to production.",src:"Associate Tech Architect @ Quantiphi",tags:["rag","text-to-sql","ai","llm","retrieval","bedrock","claude","warehouse","governed","cited"]},
+  {t:"Built the eval harness underneath the LLM work (golden datasets, LLM-as-judge, retrieval and faithfulness metrics) and wired it in as a CI release gate, so LLM changes ship against measured quality, not demos.",src:"Associate Tech Architect @ Quantiphi",tags:["eval","evaluation","quality","faithfulness","llm-as-judge","ci","gate","trust","metrics","regression"]},
+  {t:"Shipped an internal agent on Amazon Bedrock AgentCore in use by internal teams: deployed on Runtime, tools served through Gateway including a custom MCP server, per-actor Memory with a tested multi-tenant isolation guarantee, Identity with OAuth/JWT and policy-based authorization, and end-to-end OpenTelemetry tracing.",src:"Associate Tech Architect @ Quantiphi",tags:["agent","agentcore","mcp","bedrock","tools","isolation","oauth","observability","tracing","ai"]},
+  {t:"Architected a governed multi-tenant lakehouse on Apache Iceberg and S3 with Glue Data Catalog and Lake Formation across 15+ tenants, with tenant isolation, schema evolution and backfill handling.",src:"Senior Data Engineer @ Quantiphi",tags:["lakehouse","iceberg","governance","platform","architecture","tenants","s3","lake-formation","isolation"]},
+  {t:"Designed a Roaring Bitmap audience-counting system on AWS EMR and Lambda over billions of rows of affinity data, delivering sub-second cardinality queries where conventional aggregation timed out.",src:"Senior Data Engineer @ Quantiphi",tags:["distributed","bitmap","scale","emr","lambda","performance","cardinality","billions"]},
+  {t:"Architected a near-real-time ingestion pipeline (Kinesis Firehose, DMS, Redshift) that cut reporting latency from 6 hours to under 30 minutes, handling late-arriving data and idempotent reprocessing.",src:"Senior Data Engineer @ Quantiphi",tags:["streaming","kinesis","pipeline","latency","real-time","cdc","dms","redshift","ingestion","idempotent"]},
+  {t:"Cut BI query time from 3 minutes to under 30 seconds by tuning Redshift sort and distribution keys and materialized views. A 10x gain that also cut cost per query.",src:"Senior Data Engineer @ Quantiphi",tags:["redshift","performance","tuning","sql","optimization","warehouse","cost","queries"]},
+  {t:"Shipped a production GenAI reporting app on Bedrock that auto-generates narrative report insights, collapsing a 2-day manual process to under 2 hours. Owned it end to end.",src:"Senior Data Engineer @ Quantiphi",tags:["ai","genai","bedrock","claude","llm","reporting","shipped","production","end-to-end"]},
+  {t:"Unified schemas from two source marketplaces into a single star schema with conformed dimensions and slowly-changing (SCD Type 2) attributes.",src:"Senior Data Engineer @ Quantiphi",tags:["modeling","star-schema","scd","integration","dimensional","warehouse","conformed"]},
+  {t:"Processed 50+ GB/day of computer-vision data for a Bundesliga client through a PySpark ETL pipeline on Glue and Step Functions, and built 5 QuickSight dashboards adopted by coaching staff for match analysis.",src:"Data Engineer @ Quantiphi",tags:["spark","pyspark","etl","glue","step-functions","pipeline","volume","partitioning","sla","data","bundesliga","sports","quicksight","dashboards","football"]},
+  {t:"Deep Spark and PySpark expertise: architecture, tuning, shuffles, joins and skew handling at scale.",src:"Skills",tags:["spark","pyspark","performance","distributed","tuning","skew","joins"]},
+  {t:"Data quality and testing built in: schema validation, freshness and volume checks, pytest suites and CI gating, with 531 tests on the RAN platform alone.",src:"Skills",tags:["data-quality","testing","validation","pytest","freshness","observability","ci","quality"]},
+  {t:"Infrastructure as code with Terraform; engineering practice includes GitLab CI/CD, pre-commit, SonarQube and Lambda Powertools tracing.",src:"Skills",tags:["terraform","iac","infrastructure","ci","devops","sonarqube","tracing","ops","reproducible"]},
+  {t:"Years of customer-facing delivery in a consulting environment: scoping ambiguous problems into production systems, repeatedly onboarding unfamiliar external systems under deadline.",src:"Career",tags:["consulting","delivery","ownership","customer","ambiguity","experience","pre-sales","tenure"]},
+  {t:"AWS certified: Solutions Architect Professional and Data Engineer Associate, both earned 2026.",src:"Certifications",tags:["aws","certification","architect","professional","data-engineer","certified"]}
+];
+
+const STOP = new Set("a an the is are was were do does i you your my me of to in on for with and or about tell show me give what which who how have has had can your".split(" "));
+
+/* ---------------- pure engines (also unit-tested in Node) ---------------- */
+function tokenize(s){return String(s).toLowerCase().split(/[^a-z0-9+#-]+/).filter(w=>w && !STOP.has(w));}
+function fmt(v){if(Array.isArray(v))return v.join(", ");if(v===null||v===undefined)return "";return String(v);}
+function cmp(a,b){const na=parseFloat(a),nb=parseFloat(b);if(!isNaN(na)&&!isNaN(nb))return na-nb;return String(a).localeCompare(String(b));}
+
+function evalPred(row,p){
+  const m=p.trim().match(/^(\w+)\s*(>=|<=|!=|=|>|<|LIKE|CONTAINS)\s*(.+)$/i);
+  if(!m)return false;
+  let col=m[1],op=m[2].toUpperCase(),val=m[3].trim().replace(/^['"]|['"]$/g,"");
+  let cell=row[col]; if(Array.isArray(cell))cell=cell.join(" ");
+  const cs=String(cell==null?"":cell).toLowerCase(), vs=val.toLowerCase();
+  const nc=parseFloat(cell), nv=parseFloat(val);
+  switch(op){
+    case"=":return cs===vs||(!isNaN(nc)&&!isNaN(nv)&&nc===nv);
+    case"!=":return !(cs===vs||(!isNaN(nc)&&!isNaN(nv)&&nc===nv));
+    case">":return nc>nv; case"<":return nc<nv; case">=":return nc>=nv; case"<=":return nc<=nv;
+    case"LIKE":return cs.includes(vs.replace(/%/g,"")); case"CONTAINS":return cs.includes(vs);
+  } return false;
+}
+function evalWhere(row,expr){
+  const parts=expr.split(/\s+(AND|OR)\s+/i);
+  let res=evalPred(row,parts[0]);
+  for(let i=1;i<parts.length;i+=2){const op=parts[i].toUpperCase();const p=evalPred(row,parts[i+1]);res=op==="AND"?(res&&p):(res||p);}
+  return res;
+}
+function runSQL(raw){
+  const q=raw.trim().replace(/;+\s*$/,"");
+  if(!q)throw{msg:"empty query"};
+  if(/^SHOW\s+TABLES$/i.test(q))return{cols:["table","rows"],rows:Object.keys(DB).map(t=>({table:t,rows:String(DB[t].length)}))};
+  let m=q.match(/^(?:DESCRIBE|SCHEMA)\s+(\w+)$/i);
+  if(m){const t=m[1].toLowerCase();if(!DB[t])throw{msg:"unknown table: "+t};return{cols:["column","example"],rows:Object.keys(DB[t][0]).map(c=>({column:c,example:fmt(DB[t][0][c])}))};}
+  m=q.match(/^SELECT\s+(.+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+?))?(?:\s+ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?)?(?:\s+LIMIT\s+(\d+))?$/i);
+  if(!m)throw{msg:"parse error. Try SELECT * FROM experience"};
+  let cols=m[1],table=m[2].toLowerCase(),where=m[3],ob=m[4],dir=m[5],lim=m[6];
+  if(!DB[table])throw{msg:"unknown table: "+table+". Try SHOW TABLES"};
+  let rows=DB[table].slice();
+  if(where)rows=rows.filter(r=>evalWhere(r,where));
+  if(ob){if(!(DB[table][0]&&ob in DB[table][0]))throw{msg:"unknown column: "+ob};const d=(dir||"ASC").toUpperCase()==="DESC"?-1:1;rows.sort((a,b)=>cmp(a[ob],b[ob])*d);}
+  if(lim)rows=rows.slice(0,+lim);
+  if(/^COUNT\(\*\)$/i.test(cols.trim()))return{cols:["count"],rows:[{count:String(rows.length)}],n:rows.length};
+  let colList=cols.trim()==="*"?Object.keys(DB[table][0]):cols.split(",").map(s=>s.trim());
+  const bad=colList.find(c=>!(DB[table][0]&&c in DB[table][0]));
+  if(bad)throw{msg:"unknown column: "+bad};
+  return{cols:colList,rows:rows.map(r=>{const o={};colList.forEach(c=>o[c]=fmt(r[c]));return o;}),n:rows.length};
+}
+function runAsk(question){
+  const qt=tokenize(question);
+  const scored=FACTS.map(f=>{
+    const words=new Set(tokenize(f.t)); let s=0;
+    qt.forEach(term=>{ if(f.tags.includes(term))s+=3; else if(words.has(term))s+=1;
+      else if(term.length>3){ for(const tag of f.tags){ if(tag.length>3&&(tag.includes(term)||term.includes(tag))){s+=1.5;break;} } } });
+    return{f,s};
+  }).sort((a,b)=>b.s-a.s);
+  const top=scored.filter(x=>x.s>0).slice(0,3);
+  const best=scored[0]?scored[0].s:0;
+  const covered=qt.filter(term=>top.some(x=>x.f.tags.includes(term)||tokenize(x.f.t).includes(term))).length;
+  const grounding=qt.length?Math.round(covered/qt.length*100):0;
+  const pass=best>=3 && top.length>0;
+  return{top,best,grounding,pass,scanned:FACTS.length,qterms:qt};
+}
+
+/* export for Node test harness */
+if(typeof module!=="undefined"&&module.exports){module.exports={runSQL,runAsk,DB,FACTS};}
+
+/* ---------------- DOM / UI (browser only) ---------------- */
+if(typeof document!=="undefined"){
+(function(){
+  /* --- apply CONFIG: single source of truth for every link --- */
+  const setHref=(sel,url)=>document.querySelectorAll(sel).forEach(a=>a.setAttribute("href",url));
+  const strip=u=>u.replace(/^https?:\/\//,"").replace(/\/+$/,"");
+  const setText=(sel,t)=>{const e=document.querySelector(sel);if(e)e.textContent=t;};
+  try{
+    setHref(".js-resume",CONFIG.resumeURL);
+    setHref(".js-github",CONFIG.github);
+    setHref(".js-flagship",CONFIG.flagshipRepo);
+    setHref(".js-linkedin",CONFIG.linkedin);
+    setHref(".js-email","mailto:"+CONFIG.email);
+    setText(".js-email-text",CONFIG.email);
+    setText(".js-linkedin-text",strip(CONFIG.linkedin));
+    setText(".js-github-text",strip(CONFIG.github));
+  }catch(e){}
+  const $=s=>document.querySelector(s);
+  const results=$("#results"),input=$("#qinput"),prompt=$("#prompt"),pchar=$("#pchar"),
+        exWrap=$("#examples"),latOut=$("#latOut"),pipe=$("#pipe");
+  let mode="ask", role="de", latencies=[];
+
+  /* example queries differ by role lens */
+  const EX_BY_ROLE={
+    de:{
+      ask:["Tell me about the RAN platform","What's your experience with Spark?","How do you handle late-arriving data?","Why did you rewrite ETL in Rust?","Tell me about your lakehouse work"],
+      sql:["SELECT * FROM experience","SELECT role, focus, years FROM experience ORDER BY start_year DESC","SELECT * FROM projects WHERE status = 'production'","SELECT name, level FROM skills WHERE category = 'data_eng'","SELECT * FROM experience WHERE stack CONTAINS 'Iceberg'","SHOW TABLES"]
+    },
+    ai:{
+      ask:["What AI systems have you built?","Tell me about your agent work","How do you evaluate LLM answers?","What's your Bedrock experience?","What's your favorite pizza?"],
+      sql:["SELECT name, category FROM skills WHERE category = 'ai_llm'","SELECT * FROM experience WHERE stack CONTAINS 'Bedrock'","SELECT * FROM projects WHERE type = 'flagship'","SELECT * FROM projects WHERE type = 'agent'","SELECT role, focus FROM experience ORDER BY start_year DESC","SHOW TABLES"]
+    }
+  };
+  let EX=EX_BY_ROLE[role];
+  const PH={ask:"ask about my experience…",sql:"SELECT * FROM experience WHERE stack CONTAINS 'Redshift'…"};
+
+  /* hero + contact copy per role lens */
+  const ROLE={
+    de:{
+      note:'<b>Same engineer, same system, entered from the data layer up.</b>',
+      contactH2:'I build the <span class="cy">data layer</span> AI depends on, then build the <span class="gd">AI</span> on it.',
+      contactP:'Open to Senior/Staff Data Engineer and full-stack data + AI roles. Based in Mumbai, open to remote. Fastest reach is email.',
+      resume:CONFIG.resumeDE,
+      probe:"Tell me about the RAN platform"
+    },
+    ai:{
+      note:'<b>Same engineer, same system, entered from the AI layer down.</b>',
+      contactH2:'I own the <span class="gd">trust layer</span> for AI over <span class="cy">data</span>, because I built the data too.',
+      contactP:'Open to AI Engineer and applied-AI roles, backed by years of production data platforms. Based in Mumbai, open to remote. Fastest reach is email.',
+      resume:CONFIG.resumeAI,
+      probe:"Tell me about your agent work"
+    }
+  };
+
+  document.getElementById("sbFacts").textContent=FACTS.length;
+  document.getElementById("yr").textContent=new Date().getFullYear();
+
+  function drawExamples(){exWrap.innerHTML="";EX[mode].forEach(q=>{const b=document.createElement("button");b.className="ex";b.textContent=mode==="sql"?q:'"'+q+'"';b.onclick=()=>{input.value=q;execute();};exWrap.appendChild(b);});}
+  function setMode(m){mode=m;$("#tabAsk").classList.toggle("on",m==="ask");$("#tabSql").classList.toggle("on",m==="sql");
+    prompt.classList.toggle("sqlmode",m==="sql");pchar.textContent=m==="sql"?">":"?";input.placeholder=PH[m];input.value="";drawExamples();results.innerHTML="";}
+  $("#tabAsk").onclick=()=>setMode("ask");$("#tabSql").onclick=()=>setMode("sql");
+
+  /* --- role lens: reframe hero, contact, examples, résumé, skill order --- */
+  const skGrid=document.querySelector(".sk-grid");
+  const skAI=document.getElementById("skAI");
+  const skData=document.getElementById("skData");
+  function setRole(r,userInitiated){
+    role=r; EX=EX_BY_ROLE[role];
+    const rc=ROLE[role];
+    const deBtn=$("#roleDe"),aiBtn=$("#roleAi");
+    deBtn.classList.toggle("on",r==="de");aiBtn.classList.toggle("on",r==="ai");
+    deBtn.setAttribute("aria-selected",r==="de");aiBtn.setAttribute("aria-selected",r==="ai");
+    $("#roleLeadNote").innerHTML=rc.note;
+    $("#contactH2").innerHTML=rc.contactH2;
+    $("#contactP").innerHTML=rc.contactP;
+    setHref(".js-resume",rc.resume);
+    // accent shift: console tints to the active lens
+    const con=document.querySelector(".console");
+    if(con){con.classList.toggle("lens-de",r==="de");con.classList.toggle("lens-ai",r==="ai");}
+    // reorder skills: DE puts Data Engineering first; AI puts AI/LLM first
+    if(skGrid&&skAI&&skData){
+      if(r==="de")skGrid.insertBefore(skData,skAI);
+      else skGrid.insertBefore(skAI,skData);
+    }
+    // refresh console examples + placeholder for current mode
+    drawExamples();
+
+    // --- visible, felt feedback when the user taps the toggle ---
+    if(userInitiated){
+      if(mode!=="ask")setMode("ask");           // probe is a natural-language question
+      // pulse the console so the eye catches the change
+      if(con){con.classList.remove("flash");void con.offsetWidth;con.classList.add("flash");}
+      // bring the console to where they are looking, then run the lens question
+      const runProbe=()=>{ input.value=rc.probe; execute(); };
+      if(!reduce && con){
+        con.scrollIntoView({behavior:"smooth",block:"start"});
+        setTimeout(runProbe,360);               // let the scroll settle first
+      } else {
+        runProbe();
+      }
+    }
+  }
+  $("#roleDe").onclick=()=>setRole("de",true);
+  $("#roleAi").onclick=()=>setRole("ai",true);
+
+  const stages=["parse","scan","rank","compose","eval","serve"];
+  const tEls={parse:"#tParse",scan:"#tScan",rank:"#tRank",compose:"#tComp",eval:"#tEval",serve:"#tServe"};
+  function resetPipe(){document.querySelectorAll(".pstage").forEach(s=>s.classList.remove("lit"));Object.values(tEls).forEach(id=>$(id).textContent="");}
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function execute(){
+    const val=input.value.trim(); if(!val)return;
+    resetPipe();
+    const t0=performance.now();
+    let payload,error=null;
+    try{ payload = mode==="sql"?runSQL(val):runAsk(val); }catch(e){ error=e&&e.msg?e.msg:"query error"; }
+    const total=performance.now()-t0;
+    latencies.push(total); if(latencies.length>12)latencies.shift();
+    const avg=latencies.reduce((a,b)=>a+b,0)/latencies.length;
+    latOut.textContent=total.toFixed(2)+"ms";
+    document.getElementById("sbLat").textContent=avg.toFixed(2)+"ms";
+
+    // synth per-stage timings from the real total
+    const share=error?[.5,.1,.1,.1,.1,.1]:(mode==="sql"?[.28,.4,.14,.06,.06,.06]:[.18,.34,.2,.1,.12,.06]);
+    const labels=mode==="sql"
+      ? {parse:"ast",scan:(error?"-":(payload.n!=null?payload.n+" rows":"scan")),rank:"-",compose:"project",eval:"typecheck",serve:"render"}
+      : {parse:"tokens",scan:FACTS.length+" docs",rank:"top-k",compose:"extract",eval:(error?"-":(payload.pass?"pass":"withheld")),serve:"cite"};
+
+    const step=(i)=>{
+      if(i>=stages.length){ render(payload,error,total); return; }
+      const el=document.querySelector('.pstage[data-s="'+stages[i]+'"]');
+      el.classList.add("lit");
+      const tms=(total*share[i]).toFixed(2)+"ms";
+      $(tEls[stages[i]]).textContent=labels[stages[i]]+" · "+tms;
+      if(reduce){ step(i+1); }
+      else setTimeout(()=>step(i+1), 90);
+    };
+    step(0);
+  }
+
+  function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+  function hl(text,terms){let out=esc(text);terms.forEach(t=>{if(t.length<3)return;out=out.replace(new RegExp("\\b("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>");});return out;}
+
+  function render(p,error,total){
+    if(error){results.innerHTML='<div class="err"><b>error:</b> '+esc(error)+'</div>';return;}
+    if(mode==="sql"){
+      let h='<div class="rmeta"><span class="ok">● '+p.rows.length+' row'+(p.rows.length===1?"":"s")+'</span><span>scanned in <b>'+total.toFixed(2)+'ms</b></span></div>';
+      if(!p.rows.length){h+='<div class="err" style="color:var(--muted);border-color:var(--edge-2);background:var(--bg)">0 rows matched.</div>';results.innerHTML=h;return;}
+      h+='<div class="tscroll"><table class="res"><thead><tr>'+p.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+'</tr></thead><tbody>'+
+        p.rows.map(r=>"<tr>"+p.cols.map(c=>"<td>"+esc(r[c]||"")+"</td>").join("")+"</tr>").join("")+'</tbody></table></div>';
+      results.innerHTML=h;return;
+    }
+    // ask
+    const g=p.grounding, gateHtml=p.pass?'<span class="gate pass">eval gate · pass</span>':'<span class="gate hold">eval gate · answer withheld</span>';
+    let h='<div class="rmeta">'+gateHtml+'<span>grounding <b>'+g+'%</b></span><span>scanned <b>'+p.scanned+'</b> docs</span><span>retrieved <b>'+p.top.length+'</b></span><span>'+total.toFixed(2)+'ms</span></div>';
+    if(!p.pass){
+      h+='<div class="answer hold"><p>No record met the grounding threshold, so the eval gate withheld an answer rather than guess. That refusal is the point. It\'s the trust layer I build. Try one of the questions above, or ask about Spark, RAG, lakehouse, Redshift or evals.</p></div>';
+      results.innerHTML=h;return;
+    }
+    h+='<div class="answer"><p>'+hl(p.top[0].f.t,p.qterms)+'</p></div>';
+    h+='<div class="src-h">Retrieved records · every claim maps to a source (100% extractive → 0 hallucination)</div>';
+    p.top.forEach((x,i)=>{h+='<div class="src"><span class="si">['+(i+1)+'] '+x.s.toFixed(1)+'</span><span class="st">'+hl(x.f.t,p.qterms)+'<span class="sb">▸ '+esc(x.f.src)+'</span></span></div>';});
+    results.innerHTML=h;
+  }
+
+  $("#runBtn").onclick=execute;
+  input.addEventListener("keydown",e=>{if(e.key==="Enter")execute();});
+
+  // mobile nav
+  const mt=$("#mtoggle"),nl=$("#nlinks");
+  mt.onclick=()=>{const o=nl.classList.toggle("open");mt.setAttribute("aria-expanded",o);mt.textContent=o?"✕":"☰";};
+  nl.querySelectorAll("a").forEach(a=>a.onclick=()=>{nl.classList.remove("open");mt.textContent="☰";});
+
+  // clock
+  function clock(){const d=new Date();document.getElementById("sbClock").textContent=d.toLocaleTimeString("en-GB");}
+  clock();setInterval(clock,1000);
+
+  // reveals
+  if(reduce){document.querySelectorAll(".reveal").forEach(e=>e.classList.add("in"));}
+  else{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.14,rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll(".reveal").forEach(e=>io.observe(e));}
+
+  // boot sequence
+  setRole("de");   // establishes default lens: DE copy, DE examples, DE résumé, Data card first
+  const boot=$("#boot"),bootIn=$("#bootIn");
+  const bootLines=[
+    'career.db · initializing runtime',
+    '▸ mounting lakehouse ................ <span class="ok2">ok</span>',
+    '▸ loading experience .......... <span class="cy">'+DB.experience.length+' records</span>',
+    '▸ loading skills .............. <span class="cy">'+DB.skills.length+' records</span>',
+    '▸ indexing facts for retrieval ... <span class="cy">'+FACTS.length+' docs</span>',
+    '▸ eval harness ................ <span class="gd">online</span>',
+    '▸ ready <span class="cursor"></span>'
+  ];
+  let seeded=false;function seedDefault(){if(seeded)return;seeded=true;input.value=EX.ask[0];execute();}
+  function finishBoot(){ if(boot.hasAttribute("hidden"))return; boot.style.opacity="0"; setTimeout(()=>boot.setAttribute("hidden",""),480); }
+  let booted=false;try{booted=sessionStorage.getItem("booted")==="1";sessionStorage.setItem("booted","1");}catch(e){}
+  if(reduce||booted){ seedDefault(); }
+  else{
+    boot.removeAttribute("hidden");
+    let i=0;
+    const skip=()=>{finishBoot();seedDefault();window.removeEventListener("keydown",skip);boot.removeEventListener("click",skip);};
+    window.addEventListener("keydown",skip);boot.addEventListener("click",skip);
+    const tick=()=>{
+      if(i>=bootLines.length){ const s=document.createElement("div");s.className="boot-skip";s.textContent="click anywhere to enter ›";bootIn.appendChild(s);
+        setTimeout(()=>{finishBoot();seedDefault();},650); return; }
+      const line=document.createElement("div");line.className="boot-line";line.innerHTML=bootLines[i];bootIn.appendChild(line);
+      requestAnimationFrame(()=>line.classList.add("show"));
+      i++; setTimeout(tick, 240);
+    };
+    setTimeout(tick,260);
+    setTimeout(()=>{ if(!boot.hasAttribute("hidden")){finishBoot();seedDefault();} }, 4200); // safety
+  }
+})();
+}
+</script>
+</body>
+</html>
