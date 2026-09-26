@@ -466,7 +466,7 @@
    CONFIG:  edit these values, then push to GitHub. Nothing else to change.
    ------------------------------------------------------------
    resumeURL options:
-     • Keep the PDF in this repo (default):  "Abhishek_Shukla_Resume.pdf"
+     • Keep the PDF in this repo (default):  "Abhishek_Shukla_Data_AI_Engineer_5YOE.pdf"
      • Google Drive (share = "Anyone with the link"):
          preview:  "https://drive.google.com/file/d/FILE_ID/view?usp=sharing"
          download: "https://drive.google.com/uc?export=download&id=FILE_ID"
@@ -474,7 +474,7 @@
          "https://raw.githubusercontent.com/USER/REPO/main/resume.pdf"
    ============================================================ */
 const CONFIG = {
-  resumeURL:    "resume.html",   // web résumé page; it links to Abhishek_Shukla_Resume.pdf for download
+  resumeURL:    "resume.html",   // web résumé page; its Download PDF button serves the PDF (see scripts/build_resume.py)
   resumeDE:     "resume.html",
   resumeAI:     "resume.html",
   email:        "AbhishekShukla.DE@gmail.com",
@@ -543,7 +543,7 @@ const FACTS = [
   {t:"Diagnosed a 100% pre-prod failure on an aggregation Lambda caused by unbounded DynamoDB existence checks, and fixed it with early-exit lookups and parallelized calls: 85–230s saved per invocation, zero logic changes, 531 tests green.",src:"Associate Tech Architect @ Quantiphi",tags:["debugging","performance","optimization","dynamodb","lambda","testing","reliability","aggregation","diagnosis"]},
   {t:"Built self-healing re-aggregation supporting 90-day late arrivals cascading through every granularity level, using DynamoDB conditional writes and GSI-based querying.",src:"Associate Tech Architect @ Quantiphi",tags:["self-healing","late-arriving","backfill","aggregation","dynamodb","idempotent","reliability","pipeline","data"]},
   {t:"Leads a RAG / text-to-SQL initiative over governed warehouse data, delivering natural-language querying of S3, Iceberg and Redshift returning cited answers via AWS Bedrock and Anthropic Claude, from PoC to production.",src:"Associate Tech Architect @ Quantiphi",tags:["rag","text-to-sql","ai","llm","retrieval","bedrock","claude","warehouse","governed","cited"]},
-  {t:"Built the eval harness underneath the LLM work (golden datasets, LLM-as-judge, retrieval and faithfulness metrics) and wired it in as a CI release gate, so LLM changes ship against measured quality, not demos.",src:"Associate Tech Architect @ Quantiphi",tags:["eval","evaluation","quality","faithfulness","llm-as-judge","ci","gate","trust","metrics","regression"]},
+  {t:"Built the eval harness underneath the LLM work (golden datasets, LLM-as-judge, retrieval and faithfulness metrics) and wired it in as a CI release gate, so LLM changes ship against measured quality, not demos.",src:"Associate Tech Architect @ Quantiphi",tags:["eval","evaluation","evaluate","llm","answers","judge","quality","faithfulness","llm-as-judge","ci","gate","trust","metrics","regression"]},
   {t:"Shipped an internal agent on Amazon Bedrock AgentCore in use by internal teams: deployed on Runtime, tools served through Gateway including a custom MCP server, per-actor Memory with a tested multi-tenant isolation guarantee, Identity with OAuth/JWT and policy-based authorization, and end-to-end OpenTelemetry tracing.",src:"Associate Tech Architect @ Quantiphi",tags:["agent","agentcore","mcp","bedrock","tools","isolation","oauth","observability","tracing","ai"]},
   {t:"Architected a governed multi-tenant lakehouse on Apache Iceberg and S3 with Glue Data Catalog and Lake Formation across 15+ tenants, with tenant isolation, schema evolution and backfill handling.",src:"Senior Data Engineer @ Quantiphi",tags:["lakehouse","iceberg","governance","platform","architecture","tenants","s3","lake-formation","isolation"]},
   {t:"Designed a Roaring Bitmap audience-counting system on AWS EMR and Lambda over billions of rows of affinity data, delivering sub-second cardinality queries where conventional aggregation timed out.",src:"Senior Data Engineer @ Quantiphi",tags:["distributed","bitmap","scale","emr","lambda","performance","cardinality","billions"]},
